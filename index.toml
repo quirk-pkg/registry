@@ -1,0 +1,7 @@
+# Quirk package registry — short name → git source.
+#
+# To add a package, open a PR adding a line below. Format:
+#   <name> = "github.com/<owner>/<repo>"
+# Optionally pin a default version with @<tag>.
+
+slug = "github.com/AlexVachon/slug"

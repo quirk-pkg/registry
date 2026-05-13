@@ -188,6 +188,44 @@ def validate(entries: dict[str, str]) -> tuple[int, int]:
     return errs, warns
 
 
+def validate_advisories() -> int:
+    """Sanity-check advisories.toml. Tolerant: missing file = 0 advisories."""
+    import os.path
+    if not os.path.exists("advisories.toml"):
+        return 0
+    errs = 0
+    # We don't try to fully parse [[advisory]] blocks; just sanity-check
+    # required fields appear and severities are from the allowed set.
+    with open("advisories.toml", "r", encoding="utf-8") as f:
+        text = f.read()
+    blocks = text.split("[[advisory]]")
+    if len(blocks) < 2:
+        print("advisories.toml has no [[advisory]] entries")
+        return 0
+    print(f"\nValidating {len(blocks) - 1} advisory entries")
+    severities = {"low", "moderate", "high", "critical"}
+    for i, block in enumerate(blocks[1:], 1):
+        # Find next [[advisory]] in case of TOML-style continuation
+        body = block
+        for field in ("id", "package", "versions", "severity"):
+            if not re.search(rf'^\s*{field}\s*=', body, flags=re.MULTILINE):
+                print(f"  advisory #{i}: ✗ missing required field `{field}`")
+                errs += 1
+        m = re.search(r'^\s*severity\s*=\s*"([^"]+)"', body, flags=re.MULTILINE)
+        if m and m.group(1) not in severities:
+            print(f"  advisory #{i}: ✗ severity '{m.group(1)}' "
+                  f"(must be one of: {', '.join(sorted(severities))})")
+            errs += 1
+        m = re.search(r'^\s*id\s*=\s*"([^"]+)"', body, flags=re.MULTILINE)
+        if m and not re.match(r"^QSA-\d{4,}$", m.group(1)):
+            print(f"  advisory #{i}: ⚠ id '{m.group(1)}' "
+                  f"doesn't match `QSA-####` convention")
+            # Warning only — don't count toward errors
+    if errs == 0:
+        print(f"  ✓ all {len(blocks) - 1} advisories valid")
+    return errs
+
+
 def main() -> int:
     try:
         with open("index.toml", "rb") as f:
@@ -203,6 +241,11 @@ def main() -> int:
     entries = {k: v for k, v in data.items() if not isinstance(v, dict)}
     errs, warns = validate(entries)
     print(f"\n{len(entries)} entries, {errs} error(s), {warns} warning(s)")
+
+    adv_errs = validate_advisories()
+    if adv_errs:
+        errs += adv_errs
+
     return 1 if errs else 0
 
 

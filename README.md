@@ -68,6 +68,27 @@ related infrastructure — third-party PRs claiming them will be rejected:
   `crypto`, `argparse`, `url`, `csv`, `net`, `encoding`, `json`, `http`, `https`
 - `quirk`, `quirk-lang`, `core`, `std`, `stdlib`
 
+## Security advisories
+
+Known issues in published packages (broken builds, security flaws, data
+corruption) are tracked in [`advisories.toml`](advisories.toml). Users see
+them via `quirk pkg audit`:
+
+```bash
+quirk pkg audit
+# Audited 1 package(s) against 1 advisor(ies).
+#
+# 1 issue(s) found:
+#
+#   ⚠ [moderate] slug 0.1.0  (QSA-0001)
+#       Compilation fails on Quirk 0.2.0+
+#       fix:  Upgrade to v0.1.1 or later
+```
+
+To report a problem with a published package, open a PR adding an
+`[[advisory]]` entry. Severity values: `low`, `moderate`, `high`, `critical`.
+Required fields: `id`, `package`, `versions`, `severity`.
+
 ## License
 
 The registry index (this repo's contents) is MIT-licensed — see

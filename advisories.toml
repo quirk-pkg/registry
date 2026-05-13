@@ -1,0 +1,32 @@
+# Quirk package advisories.
+#
+# Each entry describes a known issue in a published package — security
+# vulnerabilities, accidental data corruption, broken builds, etc.
+# `quirk pkg audit` fetches this file (24h cached at ~/.quirk/advisories-cache.toml)
+# and reports any installed package whose version satisfies an advisory's
+# `versions` range.
+#
+# To add an advisory, open a PR. Required fields: id, package, versions,
+# severity. Optional but strongly encouraged: title, description, fix, url.
+#
+# Severity levels:
+#   critical  remote code execution, data loss, broad security impact
+#   high      security flaw with significant impact / exploitable bug
+#   moderate  notable bug — corrupted output, crashes on common inputs
+#   low       cosmetic / edge-case issues with clear mitigations
+#
+# `versions` accepts the same range syntax as `quirk pkg install`:
+#   "<0.2.0"          all versions below 0.2.0
+#   ">=0.1,<1.0"      AND of clauses
+#   "0.1.5"           exact match
+#   "!=0.2.3"         everything except this one
+
+[[advisory]]
+id          = "QSA-0001"
+package     = "slug"
+versions    = "<0.1.1"
+severity    = "moderate"
+title       = "Compilation fails on Quirk 0.2.0+"
+description = "slug 0.1.0 uses String.append() which was removed from the language in Quirk 0.2.0. Compilation fails with `Unknown method 'String.append'`."
+fix         = "Upgrade to v0.1.1 or later"
+url         = "https://github.com/AlexVachon/slug"

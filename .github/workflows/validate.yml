@@ -4,12 +4,14 @@ on:
   pull_request:
     paths:
       - "index.toml"
+      - "advisories.toml"
       - "scripts/validate.py"
       - ".github/workflows/validate.yml"
   push:
     branches: [main]
     paths:
       - "index.toml"
+      - "advisories.toml"
       - "scripts/validate.py"
 
 jobs:

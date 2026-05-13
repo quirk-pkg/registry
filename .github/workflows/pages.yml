@@ -1,0 +1,54 @@
+name: pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "index.toml"
+      - "scripts/build_site.py"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+# Required for the `deploy-pages` action.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Skip in-progress runs if a new push lands.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Build
+        run: python scripts/build_site.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    name: Deploy to Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

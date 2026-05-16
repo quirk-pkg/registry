@@ -2,7 +2,11 @@
 
 Maps short names to git sources, consumed by `quirk pkg install <name>`.
 
-## Using the registry
+> **Publishing a package?** This README documents the *registry mechanics*.
+> The full end-to-end walkthrough — from `quirk new` to a merged PR — is in
+> **[PUBLISHING.md](PUBLISHING.md)**.
+
+## Using the registry (as a consumer)
 
 ```bash
 # One-time, per user
@@ -14,7 +18,10 @@ quirk pkg install slug@v0.1.0
 quirk pkg install slug@'>=0.1,<1.0'
 ```
 
-## Adding a package
+## Adding a package (TL;DR)
+
+For the full walkthrough see **[PUBLISHING.md](PUBLISHING.md)**. The
+registry-mechanic summary:
 
 1. Fork this repo
 2. Add one line to [`index.toml`](index.toml):

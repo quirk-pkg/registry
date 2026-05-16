@@ -4,4 +4,3 @@
 #   <name> = "github.com/<owner>/<repo>"
 # Optionally pin a default version with @<tag>.
 
-slug = "github.com/AlexVachon/slug"

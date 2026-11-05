@@ -5,3 +5,4 @@
 # Optionally pin a default version with @<tag>.
 
 slug = "github.com/AlexVachon/slug"
+logger = "github.com/AlexVachon/logger"

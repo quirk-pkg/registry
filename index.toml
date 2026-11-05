@@ -4,3 +4,4 @@
 #   <name> = "github.com/<owner>/<repo>"
 # Optionally pin a default version with @<tag>.
 
+logger = "github.com/AlexVachon/logger"

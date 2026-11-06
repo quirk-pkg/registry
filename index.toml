@@ -6,3 +6,4 @@
 
 slug = "github.com/AlexVachon/slug"
 logger = "github.com/AlexVachon/logger"
+typing = "github.com/AlexVachon/quirk-typing"

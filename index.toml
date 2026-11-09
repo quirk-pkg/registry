@@ -4,6 +4,7 @@
 #   <name> = "github.com/<owner>/<repo>"
 # Optionally pin a default version with @<tag>.
 
+net = "github.com/AlexVachon/quirk-net"
 slug = "github.com/AlexVachon/slug"
 logger = "github.com/AlexVachon/logger"
 typing = "github.com/AlexVachon/quirk-typing"
